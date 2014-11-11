@@ -1,0 +1,28 @@
+{
+  "name": "ng-preview-cover",
+  "version": "0.0.1",
+  "main": "dist/ngPreviewCover.js",
+  "description": "preview cover for upload",
+  "devDependencies": {
+    "gulp": "^3.6.0",
+    "gulp-bower": "0.0.7",
+    "gulp-coffee": "~2.1.2",
+    "gulp-connect": "^2.0.6",
+    "gulp-header": "~1.0.5",
+    "gulp-less": "^1.3.6",
+    "gulp-load-plugins": "^0.6.0",
+    "gulp-uglify": "^1.0.0",
+    "opn": "^0.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SparrowJang/ngPreviewCover.git"
+  },
+  "keywords": [
+    "image",
+    "cover",
+    "preview"
+  ],
+  "author": "sparrow.jang",
+  "license": "MIT"
+}
