@@ -24,7 +24,8 @@ do ->
       promise.then ( size )=>
         canvas = @createCanvas size.width, (resizeHeight / image.height) * size.height
         ctx = canvas.getContext "2d"
-        ctx.drawImage image, 0,  fromYRate * size.height, size.width, size.height, 0, 0, size.width, size.height
+        #ctx.drawImage image, 0,  fromYRate * size.height, size.width, size.height, 0, 0, size.width, size.height
+        ctx.drawImage image, 0, 0, size.width, size.height, 0, (-fromYRate * size.height), size.width, size.height
         deferred.resolve canvas.toDataURL()
       deferred.promise
 
@@ -72,7 +73,7 @@ do ->
         </div>
         <div class="upload-block">
           <img src="#{cameraImage}" class="camera-image"/>
-          <input type="file" class="upload-file" onchange="angular.element(this).scope().onFileLoaded(this)"/>
+          <input type="file" class="upload-file" onchange="angular.element(this).scope().onFileLoaded(this)" />
 	      <span>{{titleText}}</span>
         </div>
         <div class="confirm-menu-box" ng-show="canScroll">
@@ -103,6 +104,12 @@ do ->
         started:false
       previewCoverInnerElem = $element[0].querySelector ".ng-preview-cover-inner"
       previewCoverImage = $element[0].querySelector ".preview-cover"
+      isSupportTouch = "ontouchstart" of window
+
+      if isSupportTouch
+        previewCoverInnerElem.addEventListener 'touchstart', ( event )-> scope.onDragstart event
+        previewCoverInnerElem.addEventListener 'touchmove', ( event )-> scope.onDragmove event
+        previewCoverInnerElem.addEventListener 'touchend', ( event )-> scope.onDragend event
 
       angular.extend scope,
 
@@ -147,17 +154,21 @@ do ->
             
           if elem.files[0] then fileReader.readAsDataURL elem.files[0]
 
+        getY:( event )-> if event.targetTouches then event.targetTouches[0].clientY else event.layerY
+
         onDragstart:( $event )->
           $event.preventDefault()
           if @canScroll
-            moveData.y = $event.layerY
+            y = @getY $event
+            moveData.y = y
             moveData.started = true
 
         onDragmove:( $event )->
           $event.preventDefault()
           if @canScroll and moveData.started
-            @moveScrollTop $event.layerY - moveData.y
-            moveData.y = $event.layerY
+            y = @getY $event
+            @moveScrollTop y - moveData.y
+            moveData.y = y
 
         onDragend:->
           moveData.started = false

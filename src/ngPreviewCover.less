@@ -1,20 +1,28 @@
 
+.preview-cover-transform(@value){
+  -webkit-transform: @value;
+  -moz-transform: @value;
+  -ms-transform: @value;
+  -o-transform: @value;
+  transform: @value;
+}
+
 /* Chrome, Safari, Opera */
 @-webkit-keyframes previewCoverButtonbounceIn {
-    0% { transform:scale(0.6); }
-    50% { transform:scale(1.2); }
-    75% { transform:scale(0.8); }
-    85% { transform:scale(1.1); }
-    100% { transform:scale(1); }
+    0% { .preview-cover-transform(scale(0.6)); }
+    50% { .preview-cover-transform(scale(1.2)); }
+    75% { .preview-cover-transform(scale(0.8)); }
+    85% { .preview-cover-transform(scale(1.1)); }
+    100% { .preview-cover-transform(scale(1)); }
 }
 
 /* Standard syntax */
 @keyframes previewCoverButtonbounceIn {
-    0% { transform:scale(0.6); }
-    50% { transform:scale(1.2); }
-    75% { transform:scale(0.8); }
-    85% { transform:scale(1.1); }
-    100% { transform:scale(1); }
+    0% { .preview-cover-transform(scale(0.6)); }
+    50% { .preview-cover-transform(scale(1.2)); }
+    75% { .preview-cover-transform(scale(0.8)); }
+    85% { .preview-cover-transform(scale(1.1)); }
+    100% { .preview-cover-transform(scale(1)); }
 }
 
 .ng-preview-cover-container {
@@ -57,17 +65,21 @@
       opacity:0;
       position:absolute;
     }
-    &:hover {
+    .hover-style() {
       box-shadow:0px 0px 6px rgba(0, 0, 0, 0.6);
       background-color:rgba(0,0,0,0.6);
       border:1px solid rgba(255, 255, 255, 0.8);
       //opacity:0.8;
       .camera-image {
-        transform:scale(0.8);
+        .preview-cover-transform(scale(0.8));
       }
       span {
         display:inline-block;
       }
+    }
+    &:active { .hover-style() }
+    @media screen and (min-width:768px) {
+      &:hover { .hover-style() }
     }
     .camera-image {
       transition:.1s;
@@ -100,12 +112,12 @@
         width: 25px;
       }
       &:hover {
-        transform:scale(0.85);
+        .preview-cover-transform(scale(0.85));
         background: rgba(0,0,0,0.4);
         box-shadow:0px 0px 6px rgba(0, 0, 0, 0.6);
       }
       &:active {
-        transform:scale(0.7);
+        .preview-cover-transform(scale(0.7));
         background: rgba(0,0,0,0.9);
       }
     }
@@ -129,6 +141,9 @@
     pointer-events:none;
     position:absolute;
     top:49%;
+    @media screen and (max-width:480px) {
+      top:5%;
+    }
     width:100%;
     text-align:center;
     .instruction-text {
