@@ -55,7 +55,7 @@ do ->
     @$get = -> provider
     undefined
 
-  app.directive 'ngPreviewCover', ['spImageUtils', 'previewCover', ( imageUtils, previewCover )->
+  app.directive 'ngPreviewCover', ['spImageUtils', 'previewCover', '$timeout', ( imageUtils, previewCover, $timeout )->
 
     scope:
       titleText:"@"
@@ -76,7 +76,7 @@ do ->
           <input type="file" class="upload-file" onchange="angular.element(this).scope().onFileLoaded(this)" />
 	      <span>{{titleText}}</span>
         </div>
-        <div class="confirm-menu-box" ng-show="canScroll">
+        <div class="confirm-menu-box" ng-show="canScroll && canShowMenuBox">
           <img src="#{checkedImage}" alt="" class="icon-button" ng-click="onCut( $event )">
           <img src="#{cancelImage}" alt="" class="icon-button cancel" ng-click="onCancel()">
         </div>
@@ -115,6 +115,9 @@ do ->
 
         enableScroll:-> scope.canScroll = true
         disableScroll:-> scope.canScroll = false
+        canShowMenuBox:true
+        showMenuBox:-> @canShowMenuBox = true
+        hideMenuBox:-> @canShowMenuBox = false
 
         moveScrollTop:( y )->
           top = previewCoverInnerElem.scrollTop
@@ -135,9 +138,13 @@ do ->
           promise.then ( base64 )=>
             @image = base64
             @cover = ""
-            @disableScroll()
+            @hideMenuBox()
             previewCover.emit "onLoaded", base64, scope
             scope.onLoaded base64
+            $timeout =>
+              @disableScroll()
+              @showMenuBox()
+            , 700
 
         onCancel:->
           @disableScroll()
