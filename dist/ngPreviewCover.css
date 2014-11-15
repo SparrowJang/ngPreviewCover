@@ -91,6 +91,7 @@
   background: rgba(255, 255, 255, 0.5);
 }
 .ng-preview-cover-container .main-image {
+  vertical-align: middle;
   width: 100%;
 }
 .ng-preview-cover-container .upload-block {
@@ -206,6 +207,7 @@
 }
 .ng-preview-cover-container .ng-preview-cover-inner .photo {
   width: 100%;
+  vertical-align: middle;
 }
 .ng-preview-cover-container .instruction-wrap {
   pointer-events: none;
