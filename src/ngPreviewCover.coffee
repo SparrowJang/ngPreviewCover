@@ -26,16 +26,20 @@ do ->
     cut:( image, fromYRate, heightRate, resizeWidth, resizeHeight )->
       isIos = /(ipad)|(iphone)/i.test navigator.userAgent
       iosMaxSize = 1924
+      currentImageHeight = image.height
       deferred = $q.defer()
       promise = @loadImageSize image
       promise.then ( size )=>
-        scale = 1
         if isIos and (iosMaxSize < size.width or iosMaxSize < size.height)
           scale = @getMinScale size.width, size.height, iosMaxSize, iosMaxSize
-          size.width = Math.ceil size.width * scale
-          size.height = Math.ceil size.height * scale
+          bufferCanvas = @createCanvas size.width * scale, size.height * scale
+          bufferCtx = bufferCanvas.getContext "2d"
+          bufferCtx.drawImage image, 0, 0, size.width * scale, size.height * scale
+          image = bufferCanvas
+          size.width = bufferCanvas.width
+          size.height = bufferCanvas.height
           
-        canvas = @createCanvas size.width - ( if isIos then 1 else 0 ), (resizeHeight / image.height) * size.height
+        canvas = @createCanvas size.width - ( if isIos then 1 else 0 ), (resizeHeight / currentImageHeight) * size.height
         ctx = canvas.getContext "2d"
         ctx.drawImage image, 0, 0, size.width, size.height , 0, parseInt(-fromYRate * size.height), canvas.width , size.height
         deferred.resolve canvas.toDataURL()
