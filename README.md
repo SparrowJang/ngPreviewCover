@@ -42,6 +42,8 @@ npm install
 
 #### title-text
 
+#### drag-text
+
 ## Event
 
 ####onEnter
