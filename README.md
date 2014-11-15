@@ -28,10 +28,10 @@ npm install
 ```html
 <div ng-preview-cover
      drag-text="drag photo"
-     title-text="update cover photo"
+     update-button-text="update cover photo"
      image="image"
-     on-loaded="onLoaded()"
-     on-canceled="onCanceled()"
+     on-load="onLoad()"
+     on-cancel="onCancel()"
      cover-loading="coverLoading" 
      on-enter="onEnter()"></div>
 ```
@@ -39,18 +39,38 @@ npm install
 ## Attribute
 
 #### image
+> Cover image
 
-#### title-text
+#### update-button-text
+> A updating button text
 
 #### drag-text
+> A dragging message
+
+#### coverLoading
+> open or close a loading block
 
 ## Event
 
 ####onEnter
 
-####onLoaded(base64:String)
+####onLoad(base64:String)
 
-####onCanceled
+####onCancel
+
+## Provider
+
+####on(name,func)
+> Set a common action by event
+
+```js
+app.config(function(previewCoverProvider ){ 
+
+  previewCoverProvider.on('load', function( evt ){
+    //do something...
+  });
+});
+```
 
 
 ## DEMO

@@ -61,13 +61,17 @@ do ->
   ]
   
   app.provider 'previewCover', ->
-    event =
-      onLoaded: ->
-      onEnter: ->
-    @setOnLoaded = ( onloaded )-> event.onLoaded = onloaded
-    @setOnEnter = ( onenter )-> event.onEnter = onenter
+    event = {}
+    @on = ( name, func )->
+      if !event[name] then event[name] = []
+      event[name].push func
+
     provider =
-      emit:( name, base64, scope )-> event[name] base64, scope
+      emit:->
+        args = []
+        args.push arg for arg in arguments
+        for listener in event[args.shift()]
+          listener.apply event, args
     @$get = -> provider
     undefined
 
@@ -75,11 +79,12 @@ do ->
 
     scope:
       titleText:"@"
+      updateButtonText:"@"
       dragText:"@"
       image:"=?"
       coverLoading:"=?"
-      onLoaded:"&"
-      onCanceled:"&"
+      onLoad:"&"
+      onCancel:"&"
       onEnter:"&"
 
     template:"""
@@ -90,11 +95,11 @@ do ->
         <div class="upload-block">
           <img src="#{cameraImage}" class="camera-image"/>
           <input type="file" class="upload-file" onchange="angular.element(this).scope().onFileLoaded(this)" />
-	      <span>{{titleText}}</span>
+	      <span>{{updateButtonText}}</span>
         </div>
         <div class="confirm-menu-box" ng-show="canScroll && canShowMenuBox">
           <img src="#{checkedImage}" alt="" class="icon-button" ng-click="onCut( $event )">
-          <img src="#{cancelImage}" alt="" class="icon-button cancel" ng-click="onCancel()">
+          <img src="#{cancelImage}" alt="" class="icon-button cancel" ng-click="onClickCancel()">
         </div>
         <img ng-src="{{image}}" class="main-image" alt="" ng-mousedown="$event.preventDefault()" ng-style="{visibility:canScroll?'hidden':''}">
         <div class="ng-preview-cover-inner"
@@ -127,6 +132,13 @@ do ->
         previewCoverInnerElem.addEventListener 'touchmove', ( event )-> scope.onDragmove event
         previewCoverInnerElem.addEventListener 'touchend', ( event )-> scope.onDragend event
 
+      getEventOpts = ( opts = {} )-> angular.extend opts, {scope:scope,attr:attr}
+      buildEmit = ( name )->
+        ->
+          args = [name, getEventOpts(type:name)]
+          args.push arg for arg in arguments
+          previewCover.emit.apply previewCover, args
+
       angular.extend scope,
 
         enableScroll:-> scope.canScroll = true
@@ -146,7 +158,7 @@ do ->
 
         onCut:( $event )->
           @onEnter()
-          previewCover.emit "onEnter", scope
+          buildEmit( "enter" )
           height = previewCoverImage.height
           fromYRate = @previewTop() / @previewScrollHeight()
           heightRate = @previewHeight()/@previewScrollHeight()
@@ -155,16 +167,16 @@ do ->
             @image = base64
             @cover = ""
             @hideMenuBox()
-            previewCover.emit "onLoaded", base64, scope
-            scope.onLoaded base64
+            buildEmit( "load" )( base64 )
+            scope.onLoad base64
             $timeout =>
               @disableScroll()
               @showMenuBox()
             , 700
 
-        onCancel:->
+        onClickCancel:->
           @disableScroll()
-          @onCanceled()
+          @onCancel()
 
         onFileLoaded:( elem )->
 

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title></title>
+  <title>ngPreviewCover</title>
   <meta name="viewport" content="width=device-width">
   <script type="text/javascript" src="/angular/angular.min.js"></script>
   <link rel="stylesheet" href="ngPreviewCover.css">
@@ -14,12 +14,12 @@
 </head>
 <body ng-controller="eventCtrl">
         
-  <div ng-preview-cover drag-text="拖曳可重新擺放封面相片" title-text="更新封面相片" image="image" ng-init="image='cover.jpg'" on-loaded="onLoaded()" on-canceled="onCanceled()" cover-loading="coverLoading"  on-enter="onEnter()"></div>
+  <div id="test" ng-preview-cover drag-text="拖曳可重新擺放封面相片" update-button-text="更新封面相片" image="image" ng-init="image='cover.jpg'" on-load="onLoad()" on-cancel="onCancel()" cover-loading="coverLoading"  on-enter="onEnter()"></div>
   <script type="text/javascript" src="ngPreviewCover.js"></script>
   <script>
     var app = angular.module('sample1', ['ngPreviewCover']);
     app.config(function(previewCoverProvider ){
-      previewCoverProvider.setOnLoaded(function(){
+      previewCoverProvider.on('load', function( evt ){
         console.log( arguments );
       });
     });
@@ -29,14 +29,14 @@
         onEnter:function(){
           $scope.coverLoading = true;
         },
-        onLoaded:function(){
-          console.log("onLoaded");
+        onLoad:function(){
+          console.log("onLoad");
           $timeout(function(){
             $scope.coverLoading = false;
           },5000);
         },
-        onCanceled:function(){
-          console.log("onCanceled");
+        onCancel:function(){
+          console.log("onCancel");
         }
       });
 
