@@ -70,7 +70,8 @@ do ->
       emit:->
         args = []
         args.push arg for arg in arguments
-        for listener in event[args.shift()]
+        eventQueue = event[args.shift()] or []
+        for listener in eventQueue
           listener.apply event, args
     @$get = -> provider
     undefined
@@ -189,7 +190,7 @@ do ->
             
           if elem.files[0] then fileReader.readAsDataURL elem.files[0]
 
-        getY:( event )-> if event.targetTouches then event.targetTouches[0].clientY else event.layerY
+        getY:( event )-> if event.targetTouches then event.targetTouches[0].clientY else event.clientY
 
         onDragstart:( $event )->
           $event.preventDefault()
