@@ -17,6 +17,10 @@ bower install ng-preview-cover
 npm install
 ```
 
+## Dependency
+
+* angularjs
+
 ## Support
 
 * IE10
@@ -24,6 +28,8 @@ npm install
 * firefox
 
 ## Usage
+
+Set some attributes
 
 ```html
 <div ng-preview-cover
@@ -36,9 +42,28 @@ npm install
      on-enter="onEnter()"></div>
 ```
 
+Listen some events
+```js
+app.controller('previewCoverCtrl',function( $scope ){
+
+  angular.extend( $scope,{
+    onLoad:function( base64 ){
+      //base64 == $scope.image
+      //do something...
+    },
+    onCancel:function(){
+      //do something...
+    },
+    onEnter:function(){
+      //do something...
+    }
+  });
+});
+```
+
 ## Attribute
 
-#### image
+#### image(optional)
 > Cover image
 
 #### update-button-text
@@ -47,7 +72,7 @@ npm install
 #### drag-text
 > A dragging message
 
-#### coverLoading
+#### coverLoading(optional)
 > open or close a loading block
 
 ## Event
@@ -58,15 +83,15 @@ npm install
 
 ####onCancel
 
-## Provider
+## Service
 
 ####on(name,func)
 > Set a common action by event
 
 ```js
-app.config(function(previewCoverProvider ){ 
+app.run(function( previewCover ){
 
-  previewCoverProvider.on('load', function( evt ){
+  previewCover.on('load', function( evt ){
     //do something...
   });
 });
