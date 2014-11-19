@@ -62,10 +62,6 @@ do ->
   
   app.provider 'previewCover', ->
     event = {}
-    @on = ( name, func )->
-      if !event[name] then event[name] = []
-      event[name].push func
-
     provider =
       emit:->
         args = []
@@ -73,6 +69,11 @@ do ->
         eventQueue = event[args.shift()] or []
         for listener in eventQueue
           listener.apply event, args
+      on:( name, func )->
+        if !event[name] then event[name] = []
+        event[name].push func
+
+
     @$get = -> provider
     undefined
 

@@ -18,8 +18,8 @@
   <script type="text/javascript" src="ngPreviewCover.js"></script>
   <script>
     var app = angular.module('sample1', ['ngPreviewCover']);
-    app.config(function(previewCoverProvider ){
-      previewCoverProvider.on('load', function( evt ){
+    app.run(function(previewCover ){
+      previewCover.on('load', function( evt ){
         console.log( arguments );
       });
     });
