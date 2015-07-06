@@ -170,7 +170,7 @@ do ->
             @cover = ""
             @hideMenuBox()
             buildEmit( "load" )( base64 )
-            scope.onLoad base64
+            scope.onLoad base64:base64
             $timeout =>
               @disableScroll()
               @showMenuBox()
