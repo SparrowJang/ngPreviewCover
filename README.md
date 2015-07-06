@@ -36,7 +36,7 @@ Set some attributes
      drag-text="drag photo"
      update-button-text="update cover photo"
      image="image"
-     on-load="onLoad()"
+     on-load="onLoad(base64)"
      on-cancel="onCancel()"
      cover-loading="coverLoading" 
      on-enter="onEnter()"></div>
