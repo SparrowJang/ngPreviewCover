@@ -212,3 +212,5 @@ do ->
           delete moveData.y
             
   ]
+
+  if typeof module != "undefined" then module.exports = "ngPreviewCover";
