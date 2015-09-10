@@ -10,6 +10,11 @@ This is a preview cover like fb personal cover.
 ```bash
 bower install ng-preview-cover
 ```
+or
+
+```bash
+npm install ng-preview-cover
+```
 
 ## Install node modules
 
