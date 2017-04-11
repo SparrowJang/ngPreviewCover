@@ -82,15 +82,15 @@ app.controller('previewCoverCtrl',function( $scope ){
 
 ## Event
 
-####onEnter
+#### onEnter
 
-####onLoad(base64:String)
+#### onLoad(base64:String)
 
-####onCancel
+#### onCancel
 
 ## Service
 
-####on(name,func)
+#### on(name,func)
 > Set a common action by event
 
 ```js
