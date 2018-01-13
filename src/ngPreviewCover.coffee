@@ -96,7 +96,7 @@ do ->
         </div>
         <div class="upload-block">
           <img src="#{cameraImage}" class="camera-image"/>
-          <input type="file" class="upload-file" onchange="angular.element(this).scope().onFileLoaded(this)" />
+          <input type="file" class="upload-file" onchange="angular.element(this).data('scope').onFileLoaded(this)" />
 	      <span>{{updateButtonText}}</span>
         </div>
         <div class="confirm-menu-box" ng-show="canScroll && canShowMenuBox">
@@ -127,7 +127,12 @@ do ->
         started:false
       previewCoverInnerElem = $element[0].querySelector ".ng-preview-cover-inner"
       previewCoverImage = $element[0].querySelector ".preview-cover"
+      
       isSupportTouch = "ontouchstart" of window
+
+      fileElem = $element[0].querySelector(".upload-file")
+      $file = angular.element(fileElem)
+      $file.data('scope', scope)
 
       if isSupportTouch
         previewCoverInnerElem.addEventListener 'touchstart', ( event )-> scope.onDragstart event
