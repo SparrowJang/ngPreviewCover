@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="sample1" ng-strict-di>
 <head>
   <meta charset="UTF-8">
   <title>ngPreviewCover</title>
@@ -14,15 +14,15 @@
 </head>
 <body ng-controller="eventCtrl">
         
-  <div id="test" ng-preview-cover drag-text="拖曳可重新擺放封面相片" update-button-text="更新封面相片" image="image" ng-init="image='cover.jpg'" on-load="onLoad(base64)" on-cancel="onCancel()" cover-loading="coverLoading"  on-enter="onEnter()"></div>
+  <div id="test" ng-preview-cover drag-text="拖曳可重新擺放封面相片" update-button-text="更新封面相片" image="image" ng-init="image='cover.jpg'" on-load="onLoad(base64)" on-cancel="onCancel()" cover-loading="coverLoading"  on-enter="onEnter()" ng-strict-di></div>
   <script type="text/javascript" src="ngPreviewCover.js"></script>
   <script>
     var app = angular.module('sample1', ['ngPreviewCover']);
-    app.run(function(previewCover ){
+    app.run(['previewCover', function(previewCover){
       previewCover.on('load', function( evt ){
         console.log( arguments );
       });
-    });
+    }]);
     app.controller('eventCtrl',['$scope', '$timeout', function( $scope, $timeout ){
 
       angular.extend( $scope, {
@@ -41,7 +41,7 @@
       });
 
     }]);
-    angular.bootstrap( document, [app.name] );
+    //angular.bootstrap( document, [app.name], {strictDi:true});
   </script>
 </body>
 </html>
