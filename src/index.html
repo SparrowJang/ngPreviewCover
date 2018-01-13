@@ -23,6 +23,9 @@
         console.log( arguments );
       });
     }]);
+    app.config(['$compileProvider', function ($compileProvider) {
+      $compileProvider.debugInfoEnabled(false);
+    }]);
     app.controller('eventCtrl',['$scope', '$timeout', function( $scope, $timeout ){
 
       angular.extend( $scope, {
