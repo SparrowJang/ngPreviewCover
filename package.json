@@ -24,5 +24,8 @@
     "preview"
   ],
   "author": "sparrow.jang",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "angular": "^1.6.8"
+  }
 }

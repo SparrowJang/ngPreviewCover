@@ -6,7 +6,7 @@
   ],
   "description": "preview cover for upload",
   "dependencies": {
-    "angular": "~1.4.1"
+    "angular": "^1.6.8"
   },
   "keywords": [
     "image",
