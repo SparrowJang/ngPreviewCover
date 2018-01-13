@@ -1,6 +1,6 @@
 {
   "name": "ng-preview-cover",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "main": "dist/ngPreviewCover.js",
   "description": "preview cover for upload",
   "devDependencies": {
