@@ -12,6 +12,14 @@ do ->
 
   app.factory 'spImageUtils', ['$q', ( $q )->
 
+    getCanvasDataURL = (canvas)->
+      
+      deferred = $q.defer()
+
+      deferred.resolve canvas.toDataURL()
+
+      deferred.promise
+
     createCanvas:( w, h )->
       canvas = document.createElement 'canvas'
       canvas.width = w
@@ -42,7 +50,7 @@ do ->
         canvas = @createCanvas size.width - ( if isIos then 1 else 0 ), (resizeHeight / currentImageHeight) * size.height
         ctx = canvas.getContext "2d"
         ctx.drawImage image, 0, 0, size.width, size.height , 0, parseInt(-fromYRate * size.height), canvas.width , size.height
-        deferred.resolve canvas.toDataURL()
+        getCanvasDataURL(canvas).then(deferred.resolve)
       deferred.promise
 
     loadImageSize:( img )->
@@ -171,6 +179,7 @@ do ->
           heightRate = @previewHeight()/@previewScrollHeight()
           promise = imageUtils.cut previewCoverImage, fromYRate, heightRate, @previewWidth(), @previewHeight()
           promise.then ( base64 )=>
+            @releaseResource @cover
             @image = base64
             @cover = ""
             @hideMenuBox()
@@ -181,20 +190,29 @@ do ->
               @showMenuBox()
             , 700
 
+        releaseResource:(url)->
+          if URL and URL.revokeObjectURL
+            URL.revokeObjectURL url
+
         onClickCancel:->
           @disableScroll()
           @onCancel()
 
         onFileLoaded:( elem )->
-
-          fileReader = new FileReader()
-          fileReader.onload = ( event )=>
-            scope.cover = event.target.result
+          _onload = (url)=>
+            scope.cover = url
             @enableScroll()
             elem.value = ''
             scope.$apply()
-            
-          if elem.files[0] then fileReader.readAsDataURL elem.files[0]
+
+          if URL and URL.createObjectURL
+            _onload URL.createObjectURL(elem.files[0])
+          else
+
+            fileReader = new FileReader()
+            fileReader.onload = ( event )-> _onload event.target.result
+              
+            if elem.files[0] then fileReader.readAsDataURL elem.files[0]
 
         getY:( event )-> if event.targetTouches then event.targetTouches[0].clientY else event.clientY
 
