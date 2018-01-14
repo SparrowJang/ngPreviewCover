@@ -16,7 +16,14 @@ do ->
       
       deferred = $q.defer()
 
-      deferred.resolve canvas.toDataURL()
+      if angular.isFunction canvas.toBlob
+        canvas.toBlob (blob)->
+          fileReader = new FileReader()
+          fileReader.onload = ( event )=>
+            deferred.resolve event.target.result
+          fileReader.readAsDataURL blob
+      else
+        deferred.resolve canvas.toDataURL()
 
       deferred.promise
 
