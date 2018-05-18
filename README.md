@@ -80,6 +80,13 @@ app.controller('previewCoverCtrl',function( $scope ){
 #### coverLoading(optional)
 > open or close a loading block
 
+#### mode
+> Set disabled if you want to hide the camera button.
+
+```
+<div ng-preview-cover mode="'disabled'" />
+```
+
 ## Event
 
 #### onEnter

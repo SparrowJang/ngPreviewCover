@@ -103,13 +103,14 @@ do ->
       onLoad:"&"
       onCancel:"&"
       onEnter:"&"
+      mode:'='
 
     template:"""
       <div class="ng-preview-cover-container">
         <div class="loading-mask-block" ng-show="coverLoading">
           <img src="#{ajaxLoadingImage}" alt="">
         </div>
-        <div class="upload-block">
+        <div class="upload-block" ng-show="mode != 'disabled'">
           <img src="#{cameraImage}" class="camera-image"/>
           <input type="file" class="upload-file" onchange="angular.element(this).data('scope').onFileLoaded(this)" />
 	      <span>{{updateButtonText}}</span>
