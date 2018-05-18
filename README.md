@@ -84,7 +84,7 @@ app.controller('previewCoverCtrl',function( $scope ){
 > Set disabled if you want to hide the camera button.
 
 ```
-<div ng-preview-cover mode="'disabled'" />
+<div ng-preview-cover mode="disabled" />
 ```
 
 ## Event

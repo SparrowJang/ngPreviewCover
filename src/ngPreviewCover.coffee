@@ -103,7 +103,7 @@ do ->
       onLoad:"&"
       onCancel:"&"
       onEnter:"&"
-      mode:'='
+      mode:'@'
 
     template:"""
       <div class="ng-preview-cover-container">
